@@ -37,7 +37,7 @@ schedule.scheduleJob('30 15 15 * * *', async function () {
     }
 });
 
-const token_bot = '5152843991:AAFNR8BFUeiqEZ_y9HQrLmIyfoSYScSvjQw'
+const token_bot = 'telegram token';
 const bot = new Telegraf(token_bot)
 bot.on('message', ctx => {
     ctx.replyWithDocument({
