@@ -1,17 +1,21 @@
 const schedule = require('node-schedule')
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-require('dotenv').config({ path: './.env' })
+const rule = new schedule.RecurrenceRule();
+rule.tz = 'Asia/Tashkent';
+
 const express = require('express')
-const fs = require('fs')
 const app = express()
+
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
+require('dotenv').config({ path: './.env' })
+
 const { Telegraf } = require('telegraf')
-const request = require('request');
-const { text } = require('stream/consumers');
 const token_bot = process.env.BOT_TOKEN;
 const bot = new Telegraf(token_bot)
 
-const rule = new schedule.RecurrenceRule();
-rule.tz = 'Asia/Tashkent';
+const fs = require('fs')
+const request = require('request');
+
 
 const base64encodedData = Buffer.from(process.env.S_USERNAME + ':' + process.env.S_PASSWORD).toString('base64');
 const projects = [
@@ -39,7 +43,7 @@ bot.on('message', async ctx => {
             await request(url).pipe(fs.createWriteStream('report.xlsx'))
             await setTimeout(() => {
                 ctx.replyWithDocument({
-                    source: fs.readFileSync('report.xlsx'),
+                    source: 'report.xlsx',
                     filename: filename + '.xlsx'
                 })
             }, 5000);
