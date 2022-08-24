@@ -15,6 +15,7 @@ backup.backupProductsResidual()
 
 // check server running => send message to admin
 reload.selfRequest();
+reload.checkServer();
 
 bot.start((ctx) => ctx.reply(ctx))
 bot.launch()
