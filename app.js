@@ -1,11 +1,7 @@
 const schedule = require('node-schedule')
-const rule = new schedule.RecurrenceRule();
-rule.tz = 'Asia/Tashkent';
 
 const express = require('express')
 const app = express()
-
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 require('dotenv').config({ path: './.env' })
 
@@ -16,12 +12,12 @@ const bot = new Telegraf(token_bot)
 const fs = require('fs')
 const request = require('request');
 
+const requestJs = require('./config/request');
 
-const base64encodedData = Buffer.from(process.env.S_USERNAME + ':' + process.env.S_PASSWORD).toString('base64');
 const projects = [
     {
         organization: 'CityStar',
-        url: 'http://192.168.13.6:1234'
+        url: 'http://192.168.13.68:1234'
     }
 ];
 
@@ -54,6 +50,7 @@ bot.on('message', async ctx => {
             })
         }
     } catch (error) {
+        fs.writeFileSync('./helloworld.txt', 'Hey there!');
         ctx.replyWithDocument({
             source: fs.readFileSync('./helloworld.txt'),
             filename: 'ByeWorld.txt'
@@ -63,17 +60,10 @@ bot.on('message', async ctx => {
 })
 
 // belgilangan vaqtda tovar qoldig'ini backup qilish
-schedule.scheduleJob('50 22 12 * * *', async function () {
+schedule.scheduleJob('50 56 18 * * *', async function () {
     try {
-        for (const project of projects) {
-            let res = await fetch(`${project.url}/api/backup_products_count_to_xls`, {
-                method: 'POST',
-                body: JSON.stringify({}),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Basic ' + base64encodedData
-                },
-            })
+        for await (const project of projects) {
+            let res = await requestJs.sendRequest(project.url)
             // yuklangan file ni bot ga yuborish
             res = await res.json()
             request(`${project.url}${res.url_}`).pipe(fs.createWriteStream('report.xlsx'))
@@ -86,12 +76,25 @@ schedule.scheduleJob('50 22 12 * * *', async function () {
                     })
             }, 5000);
         }
+        await request(process.env.SELF_URL, () => {
+            console.log('gooo');
+        })
         return 0;
     } catch (error) {
         console.log(error);
     }
 });
 
+// server running => send admin message
+schedule.scheduleJob('*/1 * * * *', async function () {
+    await bot.telegram.sendMessage(process.env.ADMIN_CHAT_ID, "Salom brat")
+});
+
+
+
+app.get('/', (req,res) => {
+    res.send(`Server is working ${new Date()} `)
+})
 
 bot.start((ctx) => ctx.reply(ctx))
 bot.launch()
