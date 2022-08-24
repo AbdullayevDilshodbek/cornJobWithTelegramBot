@@ -8,6 +8,8 @@ const { Telegraf } = require('../node_modules/telegraf')
 const token_bot = process.env.BOT_TOKEN;
 const bot = new Telegraf(token_bot)
 
+const fs = require('fs')
+
 module.exports.backupProductsResidual = () => schedule.scheduleJob(deadline, async function () {
     try {
         for await (const project of projects) {
@@ -17,6 +19,6 @@ module.exports.backupProductsResidual = () => schedule.scheduleJob(deadline, asy
         }
         return 0;
     } catch (error) {
-        console.log(error);
+        fs.writeFileSync('./error.txt', `${error.message} ${new Date()}`);
     }
 });

@@ -1,3 +1,4 @@
+// git ga yuklanmasin
 module.exports.urls = [
     {
         organization: 'CityStar',
@@ -5,5 +6,5 @@ module.exports.urls = [
     }
 ];
 
-module.exports.deadline = "30 23 14 * * *"
+module.exports.deadline = "10 06 23 * * *"
 
