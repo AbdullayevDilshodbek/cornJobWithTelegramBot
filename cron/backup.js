@@ -1,6 +1,6 @@
 const schedule = require('../node_modules/node-schedule')
 const { urls, deadline } = require("../config/clients")
-const requestJs = require('../config/request');
+const requestJs = require('./request');
 const projects = urls;
 
 require('../node_modules/dotenv').config({ path: '../.env' })
