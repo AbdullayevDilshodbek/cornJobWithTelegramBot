@@ -11,7 +11,7 @@ module.exports.checkServer = () => schedule.scheduleJob('0 0 */5 * * *', async f
   await bot.telegram.sendMessage(process.env.ADMIN_CHAT_ID, "Salom brat")
 });
 
-module.exports.selfRequest = () => schedule.scheduleJob('*/1 * * * *', async function () {
+module.exports.selfRequest = () => schedule.scheduleJob('*/5 * * * *', async function () {
   try {
     await request(process.env.SELF_URL, () => {
       fs.writeFileSync('./request.txt', `Server is working ${new Date()}`);
