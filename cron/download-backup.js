@@ -1,4 +1,4 @@
-const { urls } = require("../config/clients");
+const { urls } = require("../config_js/clients");
 const projects = urls;
 
 require('../node_modules/dotenv').config({ path: '../.env' })

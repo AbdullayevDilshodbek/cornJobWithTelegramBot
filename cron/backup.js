@@ -1,5 +1,5 @@
 const schedule = require('../node_modules/node-schedule')
-const { urls, deadline } = require("../config/clients")
+const { urls, deadline } = require("../config_js/clients")
 const requestJs = require('./request');
 const projects = urls;
 

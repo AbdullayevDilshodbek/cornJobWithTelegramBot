@@ -24,10 +24,10 @@
     sendButton.addEventListener('click', function () {
       socket.emit('chat_message', nicknameInput.value + ": " + messageInput.value);
       if(messageInput.value == "ok"){
-        socket.emit("join_main_cashbox")
+        socket.emit("join_main_cashbox", {app_id: 'sbvWnKPdU2PWTXeJkLIwpjljUgCmAXacWroUqLE5'})
       }
       if(messageInput.value == "transaction"){
-        socket.emit("transaction");
+        socket.emit("transaction", {app_id: 'sbvWnKPdU2PWTXeJkLIwpjljUgCmAXacWroUqLE5'});
       }
       messageInput.value = '';
     });

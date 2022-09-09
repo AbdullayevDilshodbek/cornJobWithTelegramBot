@@ -1,5 +1,6 @@
 module.exports.socketIO = (socket, io) => {
-    // test u-n
+    try {
+        // test u-n
     socket.on('chat_message', (msg) => {
         io.emit('chat_message', msg);
     });
@@ -13,7 +14,12 @@ module.exports.socketIO = (socket, io) => {
 
     // kassadan kassaga pul o'tganda `main_cashbox` room dagilarga habar berish
     socket.on("transaction", (msg) => {
-        const { app_id } = msg;
+        let { app_id } = msg;
+        app_id = app_id ?? 'sbvWnKPdU2PWTXeJkLIwpjljUgCmAXacWroUqLE5';
+        console.log(msg);
         io.to(`main_cashbox_${app_id}`).emit(`wait_transaction`, msg)
     })
+    } catch (error) {
+        console.log(error.message);
+    }
 }
