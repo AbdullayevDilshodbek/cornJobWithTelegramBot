@@ -1,3 +1,4 @@
 /node_modules
-report.xlsx
+/cron/report.xlsx
 .env
+/config_js

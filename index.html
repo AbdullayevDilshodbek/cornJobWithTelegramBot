@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Production</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <ul id="messagesList"></ul>
+  <div class="bottom_bar">
+    <input id="nicknameInput" placeholder="Nickname" />
+    <input id="messageInput" autocomplete="off" placeholder="Type a message" />
+    <button id="sendButton">Send</button>
+  </div>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script>
+    const socket = io();
+    const messagesList = document.getElementById('messagesList');
+    const messageInput = document.getElementById('messageInput');
+    const nicknameInput = document.getElementById('nicknameInput');
+   
+    const sendButton = document.getElementById('sendButton');
+    sendButton.addEventListener('click', function () {
+      socket.emit('chat_message', nicknameInput.value + ": " + messageInput.value);
+      if(messageInput.value == "ok"){
+        socket.emit("join_main_cashbox", {app_id: 'sbvWnKPdU2PWTXeJkLIwpjljUgCmAXacWroUqLE5'})
+      }
+      if(messageInput.value == "transaction"){
+        socket.emit("transaction", {app_id: 'sbvWnKPdU2PWTXeJkLIwpjljUgCmAXacWroUqLE5'});
+      }
+      messageInput.value = '';
+    });
+    socket.on('chat_message', function (msg) {
+      messagesList.innerHTML += `<li>${msg}</li>`;
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+
+    socket.on('wait_transaction', () => {
+      alert("Transaction waiting...")
+    })
+
+    messageInput.addEventListener("keyup", function (event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        sendButton.click();
+      }
+    });
+
+  </script>
+</body>
+
+</html>
