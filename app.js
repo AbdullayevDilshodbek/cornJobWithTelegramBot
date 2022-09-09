@@ -20,7 +20,7 @@ const request = require('request');
 const base64encodedData = Buffer.from(process.env.S_USERNAME + ':' + process.env.S_PASSWORD).toString('base64');
 const projects = [
     {
-        organization: 'CityStar',
+        organization: 'Client1',
         url: 'http://192.168.13.6:1234'
     }
 ];
